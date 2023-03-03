@@ -7,8 +7,14 @@ export const AmbarProvider = (props) => {
     // State Variables
     const [wallet, setWallet] = React.useState(null);
     const [chainID, setChainID] = React.useState(null);
+    const [ERC20, setERC20] = React.useState(null);
     const [Ambar, setAmbar] = React.useState(null);
-    const [AmbarPlan, setAmbarPlan] = React.useState(null);
+    const [BeginnerPlan, setBeginnerPlan] = React.useState(null);
+    const [StandarPlan, setStandardrPlan] = React.useState(null);
+    const [ExpertPlan, setExpertPlan] = React.useState(null);
+    const [BusinessPlan, setBusinessPlan] = React.useState(null);
+    const [PremiumPlan, setPremiumPlan] = React.useState(null);
+    const [ExecutivePlan, setExecutivePlan] = React.useState(null);
     const [planSelected, setPlanSelected] = React.useState(0);
 
     // Functions
@@ -16,7 +22,8 @@ export const AmbarProvider = (props) => {
         setWallet(data.wallet);
         setChainID(data.chainID);
         setAmbar(data.Ambar);
-        setAmbarPlan(data.AmbarPlan);
+        setBeginnerPlan(data.BeginnerPlan);
+        setERC20(data.ERC20);
     };
 
     const loadContractData = async () => {
@@ -28,8 +35,14 @@ export const AmbarProvider = (props) => {
     const values = {
         wallet,
         chainID,
+        ERC20,
         Ambar,
-        AmbarPlan,
+        BeginnerPlan,
+        StandarPlan,
+        ExpertPlan,
+        BusinessPlan,
+        PremiumPlan,
+        ExecutivePlan,
         planSelected,
         setPlanSelected,
         loadContractData
