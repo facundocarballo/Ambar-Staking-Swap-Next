@@ -9,6 +9,7 @@ export const AmbarProvider = (props) => {
     const [chainID, setChainID] = React.useState(null);
     const [Ambar, setAmbar] = React.useState(null);
     const [AmbarPlan, setAmbarPlan] = React.useState(null);
+    const [planSelected, setPlanSelected] = React.useState(0);
 
     // Functions
     const setBasicData = (data) => {
@@ -29,6 +30,8 @@ export const AmbarProvider = (props) => {
         chainID,
         Ambar,
         AmbarPlan,
+        planSelected,
+        setPlanSelected,
         loadContractData
     };
 
