@@ -38,7 +38,7 @@ export const StakingCard = ({
   return (
     <VStack>
       <VStack bg="black" border="1px solid #fff" borderRadius={16} minW="300px">
-        <VStack bg="gray.400" borderRadius="16px 16px 1px 1px" w="full">
+        <VStack bg="gray.700" borderRadius="16px 16px 1px 1px" w="full">
           <Box h="5px" />
           <HStack w="full">
             <Box w="5px" />
