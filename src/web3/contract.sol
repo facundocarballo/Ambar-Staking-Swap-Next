@@ -2219,7 +2219,7 @@ contract LurePlan {
     // Addresses
     address public developmentWallet =
         0x9060723c22dE586c2fA5eFa07A7743F6f4a935f5;
-    address public ownerWallet = 0x9060723c22dE586c2fA5eFa07A7743F6f4a935f5;
+    address public ownerWallet = 0xfb31e8110a814b45369AB971B067bB159cce78D2;
 
     // Planes
     uint256 public term_days = 40 days;
@@ -2229,12 +2229,13 @@ contract LurePlan {
     uint256 public bnb_max_deposit = 0.45 ether;
     uint256 public total_interest = 20;
     uint256 public _id;
-    mapping(address => uint256[]) public active_plans_of; // Planes activos que tiene esta wallet
-    mapping(uint256 => uint256) public investment_of; // Cantidad invertida por plan. begginers_plan_investment_of[begginer_plan_id]
-    mapping(uint256 => uint256) public investment_ends_of; // Timestamp de finalizacion de inversion. Por plan begginers_plan_investment_ends_of[address][begginer_plan_id]
-    mapping(uint256 => address) public ownerOf; // Wallet del owner de este plan
-    mapping(uint256 => bool) public is_active;
-    mapping(uint256 => address) public erc20_of_plan;
+
+    // Cada billetera puede tener un solo plan a la vez.
+    mapping(address => uint256) public investment_of; // Cantidad invertida por plan. begginers_plan_investment_of[begginer_plan_id]
+    mapping(address => uint256) public investment_ends_of; // Timestamp de finalizacion de inversion. Por plan begginers_plan_investment_ends_of[address][begginer_plan_id]
+    mapping(address => uint256) public investment_starts_of; // Timestamp de inicio de inversion.
+    mapping(address => bool) public is_active;
+    mapping(address => address) public erc20_of_plan;
 
     constructor() {}
 
@@ -2266,24 +2267,20 @@ contract LurePlan {
         create_plan(msg.sender, msg.value, address(0));
     }
 
-    function withdraw(uint256 id) public {
-        require(msg.sender == ownerOf[id], MSG_PLAN_OWNER);
-        require(block.timestamp >= investment_ends_of[id], MSG_PLAN_ENDS);
-        require(is_active[id], MSG_PLAN_ACTIVE);
-
+    function withdraw() public {
+        require(is_active[msg.sender], MSG_PLAN_ACTIVE);
+        require(block.timestamp >= investment_ends_of[msg.sender], MSG_PLAN_ENDS);
+        
         // Incrementamos la cantidad a reclamar en el contrato de Lure
-        increase_amount_on_lure(msg.sender, id);
-
-        // Se saca el plan activo
-        remove_plan(id, msg.sender);
+        increase_amount_on_lure(msg.sender);
 
         // Marcamos el plan como NO activo
-        is_active[id] = false;
+        is_active[msg.sender] = false;
     }
 
     // Getters
-    function get_amount_to_claim(uint256 id) public view returns (uint256) {
-        return investment_of[id] + ((investment_of[id] * total_interest) / 100);
+    function get_amount_to_claim(address wallet) public view returns (uint256) {
+        return investment_of[wallet] + ((investment_of[wallet] * total_interest) / 100);
     }
 
     function get_taxes(uint256 percent, uint256 amount)
@@ -2294,12 +2291,12 @@ contract LurePlan {
         return (amount * percent) / 100;
     }
 
-    function get_amount_to_claim_with_taxes(uint256 id)
+    function get_amount_to_claim_with_taxes(address wallet)
         public
         view
         returns (uint256)
     {
-        return get_amount_to_claim(id) - ((get_amount_to_claim(id) * 5) / 100);
+        return get_amount_to_claim(wallet) - get_taxes(5, get_amount_to_claim(wallet));
     }
 
     function get_amount_of_our_busd() public view returns (uint256) {
@@ -2343,82 +2340,45 @@ contract LurePlan {
     }
 
     // Private Methods
-    function get_index_of(uint256 id, address wallet)
-        private
-        view
-        returns (uint256)
-    {
-        uint256[] storage plans = active_plans_of[wallet];
-
-        for (uint256 i = 0; i < plans.length; i++) {
-            if (plans[i] == id) return i;
-        }
-
-        // No deberia existir
-        return plans.length;
-    }
-
-    function remove_plan(uint256 id, address wallet) private {
-        uint256[] storage plans = active_plans_of[wallet];
-
-        for (
-            uint256 i = get_index_of(id, wallet);
-            i < (plans.length - 1);
-            i++
-        ) {
-            plans[i] = plans[i + 1];
-        }
-
-        plans.pop();
-    }
-
     function create_plan(
         address wallet,
         uint256 amount,
         address erc20_address
     ) private {
-        // Se agrega un plan activo
-        uint256[] storage active_plans = active_plans_of[wallet];
-        active_plans.push(_id);
-        active_plans_of[wallet] = active_plans;
-
         // Seteamos el ERC20 correspondiente
-        erc20_of_plan[_id] = erc20_address;
+        erc20_of_plan[wallet] = erc20_address;
 
         // Seteamos la cantidad invertida
-        investment_of[_id] = amount;
+        investment_of[wallet] = amount;
+
+        // Seteamos el timestamp de creacion de la inversion
+        investment_starts_of[wallet] = block.timestamp;
 
         // Seteamos el tiempo de caducidad de la inversion
-        investment_ends_of[_id] = block.timestamp + term_days;
-
-        // Seteamos la billetera del owner del plan
-        ownerOf[_id] = wallet;
+        investment_ends_of[wallet] = block.timestamp + term_days;
 
         // Marcamos el plan como activo
-        is_active[_id] = true;
-
-        // Aumentamos el plan id
-        _id++;
+        is_active[wallet] = true;
     }
 
-    function increase_amount_on_lure(address wallet, uint256 id) private {
-        uint256 amount = get_amount_to_claim_with_taxes(id);
+    function increase_amount_on_lure(address wallet) private {
+        uint256 amount = get_amount_to_claim_with_taxes(wallet);
 
-        if (erc20_of_plan[id] == address(BUSD)) {
+        if (erc20_of_plan[wallet] == address(BUSD)) {
             lure.increase_busd_of(wallet, amount);
             return;
         }
 
-        if (erc20_of_plan[id] == address(USDT)) {
+        if (erc20_of_plan[wallet] == address(USDT)) {
             lure.increase_usdt_of(wallet, amount);
             return;
         }
 
-        if (erc20_of_plan[id] == address(AMBAR)) {
+        if (erc20_of_plan[wallet] == address(AMBAR)) {
             lure.increase_ambar_of(wallet, amount);
         }
 
-        if (erc20_of_plan[id] == address(0)) {
+        if (erc20_of_plan[wallet] == address(0)) {
             lure.increase_bnb_of(wallet, amount);
         }
     }

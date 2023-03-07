@@ -1,6 +1,6 @@
 import React from "react";
 import { NavBar } from "@/src/components/NavBar";
-import { StakingCard } from "@/src/components/Staking/card";
+import { StakingCard } from "@/src/components/Staking/sellCard";
 import { VStack, Text, Box } from "@chakra-ui/react";
 import { StakingView } from "@/src/components/Staking/view";
 

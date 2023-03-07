@@ -219,30 +219,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "active_plans_of",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "bnb_max_deposit",
 				"outputs": [
@@ -310,9 +286,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
+						"internalType": "address",
 						"name": "",
-						"type": "uint256"
+						"type": "address"
 					}
 				],
 				"name": "erc20_of_plan",
@@ -368,9 +344,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "wallet",
+						"type": "address"
 					}
 				],
 				"name": "get_amount_to_claim",
@@ -387,9 +363,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "wallet",
+						"type": "address"
 					}
 				],
 				"name": "get_amount_to_claim_with_taxes",
@@ -496,9 +472,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
+						"internalType": "address",
 						"name": "",
-						"type": "uint256"
+						"type": "address"
 					}
 				],
 				"name": "investment_ends_of",
@@ -515,9 +491,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
+						"internalType": "address",
 						"name": "",
-						"type": "uint256"
+						"type": "address"
 					}
 				],
 				"name": "investment_of",
@@ -534,9 +510,28 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "investment_starts_of",
+				"outputs": [
+					{
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					}
 				],
 				"name": "is_active",
@@ -556,25 +551,6 @@
 				"outputs": [
 					{
 						"internalType": "contract Lure",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "ownerOf",
-				"outputs": [
-					{
-						"internalType": "address",
 						"name": "",
 						"type": "address"
 					}
@@ -635,13 +611,7 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
-					}
-				],
+				"inputs": [],
 				"name": "withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -669,18 +639,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"contracts/Ambar/swapStaking.sol": {
-			"keccak256": "0x0c8c5e777c4984628bffde1b69370cef89a500105acbb98f374d231e8c39f27b",
+			"keccak256": "0xd89cba6fdef3e504d227fbe6a2c6e02127181866f987f9ead1a152f80da53767",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d3e858b0d3ba3b96bb8c5de4aa8b9efc0e8bf22d324751ad842af54c41a889bc",
-				"dweb:/ipfs/QmUfR4SENcM7VjEvtjFPjLXt9NyVpEozdyDonYRsEt3acW"
+				"bzz-raw://3c05fcc791ed5f6a34a2e477b62a8a202ada7a5b7da670d43fab182d89d17183",
+				"dweb:/ipfs/Qmf5j4gGz1vwA9fh8yiT5fCK3rDCY95rE9CXoiG3pxe2H6"
 			]
 		}
 	},

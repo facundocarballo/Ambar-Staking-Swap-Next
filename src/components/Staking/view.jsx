@@ -1,33 +1,94 @@
 import React from "react";
-import { HStack, Box, Spacer } from "@chakra-ui/react";
+import { HStack, Box, Text } from "@chakra-ui/react";
 import { Plans } from "./data";
-import { StakingCard } from "./card";
+import { StakingSellCard } from "./sellCard";
+import { StakingSoldCard } from "./soldCard";
+import { useProvider } from "@/src/context";
 
 export const StakingView = () => {
   // Attributes
 
   // Context
+  const {
+    BeginnerPlan,
+    StandarPlan,
+    ExpertPlan,
+    BusinessPlan,
+    PremiumPlan,
+    ExecutivePlan,
+    wallet,
+  } = useProvider();
+
   // Methods
+  const userHaveThisPlan = (idx) => {
+    switch (idx) {
+      case 0:
+        return BeginnerPlan.is_active;
+      case 1:
+        return StandarPlan.is_active;
+      case 2:
+        return ExpertPlan.is_active;
+      case 3:
+        return BusinessPlan.is_active;
+      case 4:
+        return PremiumPlan.is_active;
+      case 5:
+        return ExecutivePlan.is_active;
+    }
+  };
+  const getCorrectPlan = (idx) => {
+    switch (idx) {
+      case 0:
+        return BeginnerPlan;
+      case 1:
+        return StandarPlan;
+      case 2:
+        return ExpertPlan;
+      case 3:
+        return BusinessPlan;
+      case 4:
+        return PremiumPlan;
+      case 5:
+        return ExecutivePlan;
+    }
+  };
+  const getInfoPlan = (idx) => {
+    switch (idx) {
+      case 0:
+        return BeginnerPlan.info;
+      case 1:
+        return StandarPlan.info;
+      case 2:
+        return ExpertPlan.info;
+      case 3:
+        return BusinessPlan.info;
+      case 4:
+        return PremiumPlan.info;
+      case 5:
+        return ExecutivePlan.info;
+    }
+  };
   // Component
   return (
-    <HStack w='100%' overflowX="scroll">
-        <Box w='2px' />
-      {Plans.map((plan, idx) => (
-        <>
+    <>
+      {wallet == null ? (
+        <Text color="white">Por favor, conecte su billetera.</Text>
+      ) : (
+        <HStack w="100%" overflowX="scroll">
           <Box w="2px" />
-          <StakingCard
-            title={plan.title}
-            description={plan.description}
-            interesRate={plan.interesRate}
-            termDays={plan.termDays}
-            minDeposit={plan.minDeposit}
-            maxDeposit={plan.maxDeposit}
-            totalReturn={plan.totalReturn}
-            idx={idx}
-          />
-          <Box w="2px" />
-        </>
-      ))}
-    </HStack>
+          {Plans.map((_, idx) => (
+            <div key={idx}>
+              <Box w="2px" />
+              {userHaveThisPlan(idx) ? (
+                <StakingSoldCard plan={getCorrectPlan(idx)} />
+              ) : (
+                <StakingSellCard info={getInfoPlan(idx)} idx={idx} />
+              )}
+              <Box w="2px" />
+            </div>
+          ))}
+        </HStack>
+      )}
+    </>
   );
 };

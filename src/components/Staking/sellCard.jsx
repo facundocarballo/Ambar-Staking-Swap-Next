@@ -18,26 +18,16 @@ import {
 } from "@chakra-ui/react";
 import { useProvider } from "@/src/context";
 import {
+  AMBAR_IMAGE,
+  BNB_IMAGE,
   buildTransaciont,
   buildTransacion_WithNativePayment,
-  Contract_Ambar_Address,
-  Contract_Ambar_ERC20_Address,
-  Contract_Busd_Address,
-  Contract_Usdt_Address,
-  Owner_Address,
+  BUSD_IMAGE,
+  USDT_IMAGE,
 } from "@/src/web3/funcs";
 import { Spinner } from "react-bootstrap";
 
-export const StakingCard = ({
-  title,
-  description,
-  interesRate,
-  termDays,
-  minDeposit,
-  maxDeposit,
-  totalReturn,
-  idx,
-}) => {
+export const StakingSellCard = ({ info, idx }) => {
   // Attributes
   // Context
   const {
@@ -49,6 +39,7 @@ export const StakingCard = ({
     ExecutivePlan,
     ERC20,
     wallet,
+    update_plan
   } = useProvider();
   const [loading, setLoading] = React.useState(false);
   const [amount, setAmount] = React.useState("");
@@ -60,7 +51,6 @@ export const StakingCard = ({
   const [usdtApprove, setUsdtApprove] = React.useState(false);
 
   const [bnbSelected, setBnbSelected] = React.useState(false);
-  const [bnbApprove, setBnbApprove] = React.useState(false);
 
   const [ambarSelected, setAmbarSelected] = React.useState(false);
   const [ambarApprove, setAmbarApprove] = React.useState(false);
@@ -103,10 +93,11 @@ export const StakingCard = ({
     }
   };
   const handleApproveERC20 = async () => {
+    const Plan = getCorrectPlan();
     const Coin = getERC20Contract();
     const amount_wei = web3.utils.toWei(amount, "ether");
     const data = await Coin.contract.methods
-      .approve(Owner_Address, amount_wei)
+      .approve(Plan.address, amount_wei)
       .encodeABI();
     const params = await buildTransaciont(wallet, Coin.address, data);
 
@@ -137,7 +128,6 @@ export const StakingCard = ({
     const Plan = getCorrectPlan();
     const amount_wei = web3.utils.toWei(amount, "ether");
     let params = null;
-
     if (bnbSelected) {
       const data = await Plan.contract.methods.invest_bnb_direct().encodeABI();
       params = await buildTransacion_WithNativePayment(
@@ -161,11 +151,11 @@ export const StakingCard = ({
       })
       .then((res) => {
         setLoading(true);
-        const interval = setInterval(() => {
-          web3.eth.getTransactionReceipt(res, (err, rec) => {
+        const interval = setInterval(async () => {
+          web3.eth.getTransactionReceipt(res, async (err, rec) => {
             if (rec) {
-              // TODO: Actualizar la dapp, para que detecte que ahora tiene un plan activo.
               clearInterval(interval);
+              await update_plan(idx, Plan);
               setLoading(false);
             }
 
@@ -204,8 +194,13 @@ export const StakingCard = ({
 
   const isOutOfRange = () => {
     if (amount == "") return false;
-    if (Number(amount) < Number(minDeposit)) return true;
-    if (Number(amount) > Number(maxDeposit)) return true;
+    if (bnbSelected) {
+      if (Number(amount) < Number(info.minBNB)) return true;
+      if (Number(amount) > Number(info.maxBNB)) return true;
+      return false;
+    }
+    if (Number(amount) < Number(info.minDeposit)) return true;
+    if (Number(amount) > Number(info.maxDeposit)) return true;
     return false;
   };
 
@@ -224,10 +219,17 @@ export const StakingCard = ({
     return false;
   };
 
+  const getImage = () => {
+    if (busdSelected) return BUSD_IMAGE;
+    if (usdtSelected) return USDT_IMAGE;
+    if (ambarSelected) return AMBAR_IMAGE;
+    return BNB_IMAGE; 
+  };
+
   // Component
   return (
     <VStack>
-      <VStack bg="black" border="1px solid #fff" borderRadius={16} minW="300px">
+      <VStack bg="black" border="1px solid #fff" borderRadius={16} w="350px" minH='550px'>
         <VStack bg="gray.700" borderRadius="16px 16px 1px 1px" w="full">
           <Box h="5px" />
           <HStack w="full">
@@ -235,18 +237,18 @@ export const StakingCard = ({
             <VStack>
               <HStack>
                 <Box w="1px" />
-                <Text>{title}</Text>
+                <Text>{info.title}</Text>
               </HStack>
               <HStack>
                 <Box w="1px" />
                 <Text fontSize="10px" color="gray.500">
-                  {description}
+                  {info.description}
                 </Text>
               </HStack>
             </VStack>
             <Spacer />
             <Image
-              src="https://i.ibb.co/5nrV3wY/bnb.png"
+              src={getImage()}
               alt="imgToken"
               boxSize="55px"
               bg="white"
@@ -271,7 +273,7 @@ export const StakingCard = ({
               <Box w="5px" />
               <Text color="white">Interes Diario:</Text>
               <Spacer />
-              <Text color="white">{interesRate}</Text>
+              <Text color="white">{info.interesRate}</Text>
               <Box w="5px" />
             </HStack>
 
@@ -279,7 +281,7 @@ export const StakingCard = ({
               <Box w="5px" />
               <Text color="white">Total Retorno</Text>
               <Spacer />
-              <Text color="white">{totalReturn}</Text>
+              <Text color="white">{info.totalReturn}</Text>
               <Box w="5px" />
             </HStack>
 
@@ -351,7 +353,7 @@ export const StakingCard = ({
                 isDisabled_min_one_erc20_selected()
               }
             >
-              APRBAR
+              APROBAR
             </Button>
           )
         ) : (
@@ -395,14 +397,14 @@ export const StakingCard = ({
                 <Box w="10px" />
                 <Text>Desposito Minimo</Text>
                 <Spacer />
-                <Text>${minDeposit}</Text>
+                <Text>${info.minDeposit} | {info.minBNB} BNB</Text>
                 <Box w="10px" />
               </HStack>
               <HStack w="full">
                 <Box w="10px" />
                 <Text>Desposito Maximo</Text>
                 <Spacer />
-                <Text>${maxDeposit}</Text>
+                <Text>${info.maxDeposit} | {info.maxBNB} BNB</Text>
                 <Box w="10px" />
               </HStack>
               <HStack w="full">
@@ -416,14 +418,14 @@ export const StakingCard = ({
                 <Box w="10px" />
                 <Text>Total Retorno</Text>
                 <Spacer />
-                <Text>{totalReturn}</Text>
+                <Text>{info.totalReturn}</Text>
                 <Box w="10px" />
               </HStack>
               <HStack w="full">
                 <Box w="10px" />
                 <Text>Term Dias</Text>
                 <Spacer />
-                <Text>{termDays}</Text>
+                <Text>{info.termDays}</Text>
                 <Box w="10px" />
               </HStack>
             </AccordionPanel>
@@ -435,97 +437,3 @@ export const StakingCard = ({
     </VStack>
   );
 };
-
-/*
-    Accordion:
-
-            <Accordion allowToggle w="full">
-          <HStack w="full">
-            <Spacer />
-            <AccordionItem>
-              <AccordionButton>
-                <Text>Detalles</Text>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel>
-                <HStack w="full">
-                  <Box w="10px" />
-                  <Text>Desposito Minimo</Text>
-                  <Spacer />
-                  <Text>{minDeposit}</Text>
-                  <Box w="10px" />
-                </HStack>
-                <HStack w="full">
-                  <Box w="10px" />
-                  <Text>Desposito Maximo</Text>
-                  <Spacer />
-                  <Text>{maxDeposit}</Text>
-                  <Box w="10px" />
-                </HStack>
-                <HStack w="full">
-                  <Box w="10px" />
-                  <Text>Devolucion Deposito</Text>
-                  <Spacer />
-                  <Text>YES</Text>
-                  <Box w="10px" />
-                </HStack>
-                <HStack w="full">
-                  <Box w="10px" />
-                  <Text>Total Retorno</Text>
-                  <Spacer />
-                  <Text>{totalReturn}</Text>
-                  <Box w="10px" />
-                </HStack>
-              </AccordionPanel>
-            </AccordionItem>
-            <Box w="10px" />
-          </HStack>
-        </Accordion>
-*/
-
-/*
-        <HStack w="full">
-          <Box w="10px" />
-          <VStack>
-            <Heading>{interesRate}</Heading>
-            <Text fontSize="12px">Interes Diario</Text>
-          </VStack>
-          <Spacer />
-          <VStack>
-            <Heading>{termDays}</Heading>
-            <Text fontSize="12px">Term Dias</Text>
-          </VStack>
-          <Box w="10px" />
-        </HStack>
-        <Box h="5px" />
-        <Divider />
-        <Box h="5px" />
-        <HStack w="full">
-          <Box w="10px" />
-          <Text>Desposito Minimo</Text>
-          <Spacer />
-          <Text>{minDeposit}</Text>
-          <Box w="10px" />
-        </HStack>
-        <HStack w="full">
-          <Box w="10px" />
-          <Text>Desposito Maximo</Text>
-          <Spacer />
-          <Text>{maxDeposit}</Text>
-          <Box w="10px" />
-        </HStack>
-        <HStack w="full">
-          <Box w="10px" />
-          <Text>Devolucion Deposito</Text>
-          <Spacer />
-          <Text>YES</Text>
-          <Box w="10px" />
-        </HStack>
-        <HStack w="full">
-          <Box w="10px" />
-          <Text>Total Retorno</Text>
-          <Spacer />
-          <Text>{totalReturn}</Text>
-          <Box w="10px" />
-        </HStack>
-*/
