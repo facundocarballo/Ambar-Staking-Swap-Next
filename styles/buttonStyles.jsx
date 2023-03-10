@@ -19,6 +19,17 @@ export const ButtonsStyles = {
                 transform: 'scale(1.05)',
                 shadow: '0px 0px 20px #000'
             }
+        },
+        swap: {
+            bg: 'teal.300',
+            color: 'white',
+            borderRadius: '7px',
+            boxShadow: 'lg',
+            _hover: {
+                transform: 'scale(1.05)',
+                shadow: '0px 0px 10px #000',
+                bg: 'teal.500',
+            }
         }
     }
 };

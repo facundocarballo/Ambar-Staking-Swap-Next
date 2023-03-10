@@ -1,7 +1,6 @@
 import { getImageOfERC20, getSymbolOfERC20, unixToDate } from ".";
 
 export const getPlanData = async (Contract, contractAddress, wallet, info) => {
-    console.log("Contract: ", Contract);
     const erc20 = await Contract.methods.erc20_of_plan(wallet).call();
     const symbol = getSymbolOfERC20(erc20);
     const image = getImageOfERC20(erc20);

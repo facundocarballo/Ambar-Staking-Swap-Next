@@ -3,7 +3,11 @@ import Web3 from "web3";
 import AmbarJSON from '../ABI/Ambar.json';
 import AmbarPlanJSON from '../ABI/AmbarPlan.json';
 import ERC20_JSON from '../ABI/ERC20.json';
+import PAIR_JSON from "../ABI/Pair.json";
+import ROUTER_JSON from '../ABI/Router.json';
+import { getPairInfo } from "./pair";
 import { getPlanData } from "./plans";
+import { getAllTokensInfo } from "./tokens";
 
 export const BSC_MAINNET_RPC = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 
@@ -28,15 +32,18 @@ export const Contract_Beginner_Plan_Address = "0xe6a7120ba2eB72C72C467051Dd4d1B3
 // ERC20's
 export const Contract_Busd_Address = "0x2E50a44F2C744E2BcDe025028622d6349115D7Bf";
 export const Contract_Usdt_Address = "0x24DA85920bbF1be872632aF232ac34a2C5580Ef6";
+export const Contract_WBNB_Address = "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd";
 export const Contract_Ambar_ERC20_Address = "0x0bcaEaB8160482801D5bC3f57ee5ED5caB2458ae";
 
+// PancakeSwap
+export const Contract_Pair_AMBAR_BNB_Address = "0xFaB8aaa174574ca62eA164F968BaBeea7e0190c9" //"0xA2C9147Bb87A117340F0cf7f9789DF3722b0fc1d";
+export const Contract_Router_Address = "0xD99D1c33F9fC3444f8101754aBC46c52416550D1";
 
 // IMAGES
 export const BUSD_IMAGE = "https://i.ibb.co/3C00M3S/busd.png";
 export const USDT_IMAGE = "https://i.ibb.co/tXBk12n/usdt.png";
 export const AMBAR_IMAGE = "https://i.ibb.co/B29Kxfp/ambar-image.png";
 export const BNB_IMAGE = "https://i.ibb.co/5nrV3wY/bnb.png";
-// export const Contract_Ambar_Plan_Address = "";
 
 export const loadBasicData = async () => {
     await loadWeb3();
@@ -50,20 +57,18 @@ export const loadBasicData = async () => {
     const ContractUSDT = new Contract(ERC20_JSON.output.abi, Contract_Usdt_Address);
     const ContractAmbarERC20 = new Contract(ERC20_JSON.output.abi, Contract_Ambar_ERC20_Address);
 
+    // PancakeSwap Contract
+    const ContractPair_AMBAR_BNB = new Contract(PAIR_JSON.output.abi, Contract_Pair_AMBAR_BNB_Address);
+    const ContractRouter = new Contract(ROUTER_JSON.output.abi, Contract_Router_Address);
+    
+    const PAIR = await getPairInfo(ContractPair_AMBAR_BNB);
+
     const wallet = await getAccount();
     const chainID = await window.web3.eth.getChainId();
 
-    const BUSD = await getERC20Info(ContractBUSD, wallet, 'ether', Contract_Busd_Address);
-    const USDT = await getERC20Info(ContractUSDT, wallet, 'ether', Contract_Usdt_Address);
-    const AMBAR = await getERC20Info(ContractAmbarERC20, wallet, 'ether', Contract_Ambar_ERC20_Address);
-
     const actual_timestamp = await getActualTimestamp();
 
-    const ERC20 = {
-        BUSD,
-        USDT,
-        AMBAR
-    };
+    const ERC20 = await getAllTokensInfo(ContractBUSD, ContractUSDT, ContractAmbarERC20, wallet, 'ether');
 
     const Ambar = {
         contract: ContractAmbar,
@@ -159,6 +164,8 @@ export const loadBasicData = async () => {
         PremiumPlan,
         ExecutivePlan,
         ERC20,
+        PAIR,
+        ContractRouter,
         actual_timestamp
     }
 };
@@ -256,6 +263,17 @@ export const getERC20Info = async (Contract, addressAccount, format, contractAdd
         contract: Contract,
         address: contractAddress,
         balance: Number(balance).toFixed(2)
+    }
+}
+
+export const getNativeCryptoInfo = async (wallet, format) => {
+    const bnbAmountWEI = await web3.eth.getBalance(wallet);
+    const bnbAmount = web3.utils.fromWei(bnbAmountWEI, format);
+
+    return {
+        contract: null,
+        address: null,
+        balance: Number(bnbAmount).toFixed(2)
     }
 }
 

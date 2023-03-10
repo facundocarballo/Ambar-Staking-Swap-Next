@@ -1,7 +1,8 @@
 import React from "react";
 import { Beginner, Business, Executive, Premium, Standar } from "./components/Staking/data";
-import { loadBasicData } from "./web3/funcs";
+import { getERC20Info, getNativeCryptoInfo, loadBasicData } from "./web3/funcs";
 import { getPlanData } from "./web3/funcs/plans";
+import { getAllTokensInfo } from "./web3/funcs/tokens";
 
 const AmbarContext = React.createContext(null);
 
@@ -11,6 +12,8 @@ export const AmbarProvider = (props) => {
     const [chainID, setChainID] = React.useState(null);
     const [ERC20, setERC20] = React.useState(null);
     const [Ambar, setAmbar] = React.useState(null);
+    const [PAIR, setPAIR] = React.useState(null);
+    const [ContractRouter, setContractRouter] = React.useState(null);
     const [BeginnerPlan, setBeginnerPlan] = React.useState(null);
     const [StandarPlan, setStandardrPlan] = React.useState(null);
     const [ExpertPlan, setExpertPlan] = React.useState(null);
@@ -32,7 +35,9 @@ export const AmbarProvider = (props) => {
         setPremiumPlan(data.PremiumPlan);
         setExecutivePlan(data.ExecutivePlan);
         setERC20(data.ERC20);
+        setPAIR(data.PAIR);
         setActualTimestamp(data.actual_timestamp);
+        setContractRouter(data.ContractRouter);
     };
 
     const loadContractData = async () => {
@@ -42,7 +47,6 @@ export const AmbarProvider = (props) => {
 
     // Updates
     const update_plan = async (idx, Plan) => {
-        console.log("IDX: ", idx);
         switch (idx) {
             case 0:
                 const beginner = await getPlanData(
@@ -101,6 +105,11 @@ export const AmbarProvider = (props) => {
         }
     };
 
+    const update_balances = async () => {
+        const erc20 = await getAllTokensInfo(ERC20.BUSD.contract, ERC20.USDT.contract, ERC20.AMBAR.contract, wallet, 'ether');
+        setERC20(erc20);
+    };
+
     // Values
     const values = {
         wallet,
@@ -115,9 +124,12 @@ export const AmbarProvider = (props) => {
         ExecutivePlan,
         planSelected,
         actual_timestamp,
+        PAIR,
+        ContractRouter,
         setPlanSelected,
         loadContractData,
-        update_plan
+        update_plan,
+        update_balances
     };
 
     return <AmbarContext.Provider value={values} {...props} />
