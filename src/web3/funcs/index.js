@@ -62,7 +62,7 @@ export const loadBasicData = async () => {
     const ContractPair_AMBAR_BNB = new Contract(PAIR_JSON.output.abi, Contract_Pair_AMBAR_BNB_Address);
     const ContractRouter = new Contract(ROUTER_JSON.output.abi, Contract_Router_Address);
 
-    const bnbPrice = await getBNBCurrentPrice();
+    const { bnb_usd } = await getBNBCurrentPrice();
     
     const PAIR = await getPairInfo(ContractPair_AMBAR_BNB);
 
@@ -170,7 +170,7 @@ export const loadBasicData = async () => {
         PAIR,
         ContractRouter,
         actual_timestamp,
-        bnbPrice
+        bnbPrice: bnb_usd
     }
 };
 

@@ -132,7 +132,9 @@ export const AmbarProvider = (props) => {
         setPlanSelected,
         loadContractData,
         update_plan,
-        update_balances
+        update_balances,
+        setBnbPrice,
+        setPAIR
     };
 
     return <AmbarContext.Provider value={values} {...props} />

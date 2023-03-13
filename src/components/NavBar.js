@@ -20,7 +20,7 @@ export const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { loadContractData, wallet, bnbPrice, PAIR } = useProvider();
+  const { loadContractData, wallet, bnbPrice, PAIR, setBnbPrice, setPAIR } = useProvider();
 
   useEffect(() => {
     const onScroll = () => {
@@ -32,6 +32,13 @@ export const NavBar = () => {
     }
 
     window.addEventListener("scroll", onScroll);
+
+    if (bnbPrice == null) {
+      getBNBCurrentPrice().then((obj) => {
+        setBnbPrice(obj.bnb_usd);
+        setPAIR(obj.pair);
+      });
+    }
 
     return () => window.removeEventListener("scroll", onScroll);
   }, [])
