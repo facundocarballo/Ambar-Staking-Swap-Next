@@ -12,11 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { useProvider } from "@/src/context";
 import { buildTransaciont, getActualTimestamp } from "@/src/web3/funcs";
+import { Spinner } from "react-bootstrap";
 
-export const StakingSoldCard = ({ plan }) => {
+export const StakingSoldCard = ({ plan, idx }) => {
   // Attributes
+  const [loading, setLoading] = React.useState(false);
   // Context
-  const { actual_timestamp, wallet } = useProvider();
+  const { actual_timestamp, wallet, update_plan } = useProvider();
   // Methods
   const getSliderValue = () => {
     const dif_start =
@@ -40,7 +42,7 @@ export const StakingSoldCard = ({ plan }) => {
         const interval = setInterval(async () => {
           web3.eth.getTransactionReceipt(res, async (err, rec) => {
             if (rec) {
-              await update_plan(idx);
+              await update_plan(idx, plan);
               clearInterval(interval);
               setLoading(false);
             }
@@ -207,9 +209,13 @@ export const StakingSoldCard = ({ plan }) => {
                   cursor={getSliderValue() >= 1 ? "pointer" : "default"}
                 >
                   <Box w="30%" />
-                  <Text color="white" fontWeight="bold">
-                    RETIRAR DINERO
-                  </Text>
+                  {loading ? (
+                    <Spinner />
+                  ) : (
+                    <Text color="white" fontWeight="bold">
+                      RETIRAR DINERO
+                    </Text>
+                  )}
                 </HStack>
                 <Spacer />
               </VStack>

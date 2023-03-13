@@ -2,8 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-pragma solidity ^0.8.0;
-
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
@@ -199,11 +197,10 @@ library Math {
     /**
      * @notice Calculates sqrt(a), following the selected rounding direction.
      */
-    function sqrt(uint256 a, Rounding rounding)
-        internal
-        pure
-        returns (uint256)
-    {
+    function sqrt(
+        uint256 a,
+        Rounding rounding
+    ) internal pure returns (uint256) {
         unchecked {
             uint256 result = sqrt(a);
             return
@@ -258,11 +255,10 @@ library Math {
      * @dev Return the log in base 2, following the selected rounding direction, of a positive value.
      * Returns 0 if given 0.
      */
-    function log2(uint256 value, Rounding rounding)
-        internal
-        pure
-        returns (uint256)
-    {
+    function log2(
+        uint256 value,
+        Rounding rounding
+    ) internal pure returns (uint256) {
         unchecked {
             uint256 result = log2(value);
             return
@@ -278,31 +274,31 @@ library Math {
     function log10(uint256 value) internal pure returns (uint256) {
         uint256 result = 0;
         unchecked {
-            if (value >= 10**64) {
-                value /= 10**64;
+            if (value >= 10 ** 64) {
+                value /= 10 ** 64;
                 result += 64;
             }
-            if (value >= 10**32) {
-                value /= 10**32;
+            if (value >= 10 ** 32) {
+                value /= 10 ** 32;
                 result += 32;
             }
-            if (value >= 10**16) {
-                value /= 10**16;
+            if (value >= 10 ** 16) {
+                value /= 10 ** 16;
                 result += 16;
             }
-            if (value >= 10**8) {
-                value /= 10**8;
+            if (value >= 10 ** 8) {
+                value /= 10 ** 8;
                 result += 8;
             }
-            if (value >= 10**4) {
-                value /= 10**4;
+            if (value >= 10 ** 4) {
+                value /= 10 ** 4;
                 result += 4;
             }
-            if (value >= 10**2) {
-                value /= 10**2;
+            if (value >= 10 ** 2) {
+                value /= 10 ** 2;
                 result += 2;
             }
-            if (value >= 10**1) {
+            if (value >= 10 ** 1) {
                 result += 1;
             }
         }
@@ -313,16 +309,15 @@ library Math {
      * @dev Return the log in base 10, following the selected rounding direction, of a positive value.
      * Returns 0 if given 0.
      */
-    function log10(uint256 value, Rounding rounding)
-        internal
-        pure
-        returns (uint256)
-    {
+    function log10(
+        uint256 value,
+        Rounding rounding
+    ) internal pure returns (uint256) {
         unchecked {
             uint256 result = log10(value);
             return
                 result +
-                (rounding == Rounding.Up && 10**result < value ? 1 : 0);
+                (rounding == Rounding.Up && 10 ** result < value ? 1 : 0);
         }
     }
 
@@ -362,11 +357,10 @@ library Math {
      * @dev Return the log in base 10, following the selected rounding direction, of a positive value.
      * Returns 0 if given 0.
      */
-    function log256(uint256 value, Rounding rounding)
-        internal
-        pure
-        returns (uint256)
-    {
+    function log256(
+        uint256 value,
+        Rounding rounding
+    ) internal pure returns (uint256) {
         unchecked {
             uint256 result = log256(value);
             return
@@ -458,10 +452,10 @@ library Address {
      *
      * _Available since v3.1._
      */
-    function functionCall(address target, bytes memory data)
-        internal
-        returns (bytes memory)
-    {
+    function functionCall(
+        address target,
+        bytes memory data
+    ) internal returns (bytes memory) {
         return
             functionCallWithValue(
                 target,
@@ -544,11 +538,10 @@ library Address {
      *
      * _Available since v3.3._
      */
-    function functionStaticCall(address target, bytes memory data)
-        internal
-        view
-        returns (bytes memory)
-    {
+    function functionStaticCall(
+        address target,
+        bytes memory data
+    ) internal view returns (bytes memory) {
         return
             functionStaticCall(
                 target,
@@ -584,10 +577,10 @@ library Address {
      *
      * _Available since v3.4._
      */
-    function functionDelegateCall(address target, bytes memory data)
-        internal
-        returns (bytes memory)
-    {
+    function functionDelegateCall(
+        address target,
+        bytes memory data
+    ) internal returns (bytes memory) {
         return
             functionDelegateCall(
                 target,
@@ -659,10 +652,10 @@ library Address {
         }
     }
 
-    function _revert(bytes memory returndata, string memory errorMessage)
-        private
-        pure
-    {
+    function _revert(
+        bytes memory returndata,
+        string memory errorMessage
+    ) private pure {
         // Look for revert reason and bubble it up if present
         if (returndata.length > 0) {
             // The easiest way to bubble the revert reason is using memory via assembly
@@ -718,11 +711,10 @@ library Strings {
     /**
      * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.
      */
-    function toHexString(uint256 value, uint256 length)
-        internal
-        pure
-        returns (string memory)
-    {
+    function toHexString(
+        uint256 value,
+        uint256 length
+    ) internal pure returns (string memory) {
         bytes memory buffer = new bytes(2 * length + 2);
         buffer[0] = "0";
         buffer[1] = "x";
@@ -782,25 +774,20 @@ interface IERC721 is IERC165 {
         uint256 tokenId
     ) external;
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) external;
+    function transferFrom(address from, address to, uint256 tokenId) external;
 
     function approve(address to, uint256 tokenId) external;
 
     function setApprovalForAll(address operator, bool _approved) external;
 
-    function getApproved(uint256 tokenId)
-        external
-        view
-        returns (address operator);
+    function getApproved(
+        uint256 tokenId
+    ) external view returns (address operator);
 
-    function isApprovedForAll(address owner, address operator)
-        external
-        view
-        returns (bool);
+    function isApprovedForAll(
+        address owner,
+        address operator
+    ) external view returns (bool);
 }
 
 interface IERC721Metadata is IERC721 {
@@ -833,13 +820,9 @@ abstract contract ERC165 is IERC165 {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override returns (bool) {
         return interfaceId == type(IERC165).interfaceId;
     }
 }
@@ -879,13 +862,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(ERC165, IERC165)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(ERC165, IERC165) returns (bool) {
         return
             interfaceId == type(IERC721).interfaceId ||
             interfaceId == type(IERC721Metadata).interfaceId ||
@@ -895,13 +874,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-balanceOf}.
      */
-    function balanceOf(address owner)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function balanceOf(
+        address owner
+    ) public view virtual override returns (uint256) {
         require(
             owner != address(0),
             "ERC721: address zero is not a valid owner"
@@ -912,13 +887,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-ownerOf}.
      */
-    function ownerOf(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (address)
-    {
+    function ownerOf(
+        uint256 tokenId
+    ) public view virtual override returns (address) {
         address owner = _ownerOf(tokenId);
         require(owner != address(0), "ERC721: invalid token ID");
         return owner;
@@ -941,13 +912,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721Metadata-tokenURI}.
      */
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view virtual override returns (string memory) {
         _requireMinted(tokenId);
 
         string memory baseURI = _baseURI();
@@ -984,13 +951,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-getApproved}.
      */
-    function getApproved(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (address)
-    {
+    function getApproved(
+        uint256 tokenId
+    ) public view virtual override returns (address) {
         _requireMinted(tokenId);
 
         return _tokenApprovals[tokenId];
@@ -999,24 +962,20 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-setApprovalForAll}.
      */
-    function setApprovalForAll(address operator, bool approved)
-        public
-        virtual
-        override
-    {
+    function setApprovalForAll(
+        address operator,
+        bool approved
+    ) public virtual override {
         _setApprovalForAll(_msgSender(), operator, approved);
     }
 
     /**
      * @dev See {IERC721-isApprovedForAll}.
      */
-    function isApprovedForAll(address owner, address operator)
-        public
-        view
-        virtual
-        override
-        returns (bool)
-    {
+    function isApprovedForAll(
+        address owner,
+        address operator
+    ) public view virtual override returns (bool) {
         return _operatorApprovals[owner][operator];
     }
 
@@ -1121,12 +1080,10 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * - `tokenId` must exist.
      */
-    function _isApprovedOrOwner(address spender, uint256 tokenId)
-        internal
-        view
-        virtual
-        returns (bool)
-    {
+    function _isApprovedOrOwner(
+        address spender,
+        uint256 tokenId
+    ) internal view virtual returns (bool) {
         address owner = ERC721.ownerOf(tokenId);
         return (spender == owner ||
             isApprovedForAll(owner, spender) ||
@@ -1404,7 +1361,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function _beforeConsecutiveTokenTransfer(
         address from,
         address to,
-        uint256, /*first*/
+        uint256 /*first*/,
         uint96 size
     ) internal virtual {
         if (from != address(0)) {
@@ -1420,9 +1377,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * Calling conditions are similar to {_afterTokenTransfer}.
      */
     function _afterConsecutiveTokenTransfer(
-        address, /*from*/
-        address, /*to*/
-        uint256, /*first*/
+        address /*from*/,
+        address /*to*/,
+        uint256 /*first*/,
         uint96 /*size*/
     ) internal virtual {}
 }
@@ -1434,10 +1391,10 @@ interface IERC20 {
 
     function transfer(address to, uint256 amount) external returns (bool);
 
-    function allowance(address owner, address spender)
-        external
-        view
-        returns (uint256);
+    function allowance(
+        address owner,
+        address spender
+    ) external view returns (uint256);
 
     function approve(address spender, uint256 amount) external returns (bool);
 
@@ -1527,13 +1484,9 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-balanceOf}.
      */
-    function balanceOf(address account)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function balanceOf(
+        address account
+    ) public view virtual override returns (uint256) {
         return _balances[account];
     }
 
@@ -1545,12 +1498,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `to` cannot be the zero address.
      * - the caller must have a balance of at least `amount`.
      */
-    function transfer(address to, uint256 amount)
-        public
-        virtual
-        override
-        returns (bool)
-    {
+    function transfer(
+        address to,
+        uint256 amount
+    ) public virtual override returns (bool) {
         address owner = _msgSender();
         _transfer(owner, to, amount);
         return true;
@@ -1559,13 +1510,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-allowance}.
      */
-    function allowance(address owner, address spender)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
+    function allowance(
+        address owner,
+        address spender
+    ) public view virtual override returns (uint256) {
         return _allowances[owner][spender];
     }
 
@@ -1579,12 +1527,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function approve(address spender, uint256 amount)
-        public
-        virtual
-        override
-        returns (bool)
-    {
+    function approve(
+        address spender,
+        uint256 amount
+    ) public virtual override returns (bool) {
         address owner = _msgSender();
         _approve(owner, spender, amount);
         return true;
@@ -1629,11 +1575,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function increaseAllowance(address spender, uint256 addedValue)
-        public
-        virtual
-        returns (bool)
-    {
+    function increaseAllowance(
+        address spender,
+        uint256 addedValue
+    ) public virtual returns (bool) {
         address owner = _msgSender();
         _approve(owner, spender, allowance(owner, spender) + addedValue);
         return true;
@@ -1653,11 +1598,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue)
-        public
-        virtual
-        returns (bool)
-    {
+    function decreaseAllowance(
+        address spender,
+        uint256 subtractedValue
+    ) public virtual returns (bool) {
         address owner = _msgSender();
         uint256 currentAllowance = allowance(owner, spender);
         require(
@@ -1869,7 +1813,8 @@ contract Lure {
     string public constant MSG_AMBAR_FAIL = "AMBAR. Transfer Fail";
     string public constant MSG_NO_FUNDS_USER =
         "You don't enoght funds in your account.";
-    string public constant MSG_DEV_WALLET = "Only the development wallet can call to this function.";
+    string public constant MSG_DEV_WALLET =
+        "Only the development wallet can call to this function.";
 
     // ERC20
     ERC20 public BUSD = ERC20(0x2E50a44F2C744E2BcDe025028622d6349115D7Bf);
@@ -2185,201 +2130,5 @@ contract Lure {
             wallet == address(business) ||
             wallet == address(premium) ||
             wallet == address(executive));
-    }
-}
-
-contract LurePlan {
-    // Constants
-    string public constant MSG_MIN_DEPOSIT =
-        "Your deposit it's too low for this plan.";
-    string public constant MSG_MAX_DEPOSIT =
-        "Your deposit it's too much for this plan.";
-    string public constant MSG_PLAN_OWNER =
-        "You are not the owner of this plan.";
-    string public constant MSG_PLAN_ENDS = "Your plan is still working.";
-    string public constant MSG_BUSD_FAIL = "BUSD. Transfer Fail";
-    string public constant MSG_USDT_FAIL = "USDT. Transfer Fail";
-    string public constant MSG_AMBAR_FAIL = "AMBAR. Transfer Fail";
-    string public constant MSG_WITHDRAW_FAIL =
-        "Please contact support to make this transaction and try it again. Thanks.";
-    string public constant MSG_PLAN_ACTIVE = "This plan is not active";
-    string public constant MSG_LURE =
-        "Only Lure Contract can call to this function.";
-    string public constant ERC20_NOT_VALID = "This ERC20 is not valid.";
-    string public constant MSG_DEV_WALLET = "Only the development wallet can call to this function.";
-
-    // ERC20
-    ERC20 public BUSD = ERC20(0x2E50a44F2C744E2BcDe025028622d6349115D7Bf);
-    ERC20 public USDT = ERC20(0x24DA85920bbF1be872632aF232ac34a2C5580Ef6);
-    ERC20 public AMBAR = ERC20(0x0bcaEaB8160482801D5bC3f57ee5ED5caB2458ae);
-
-    // Lure
-    Lure public lure;
-
-    // Addresses
-    address public developmentWallet =
-        0x9060723c22dE586c2fA5eFa07A7743F6f4a935f5;
-    address public ownerWallet = 0xfb31e8110a814b45369AB971B067bB159cce78D2;
-
-    // Planes
-    uint256 public term_days = 40 days;
-    uint256 public erc20_min_deposit = 50 ether;
-    uint256 public erc20_max_deposit = 149 ether;
-    uint256 public bnb_min_deposit = 0.15 ether;
-    uint256 public bnb_max_deposit = 0.45 ether;
-    uint256 public total_interest = 20;
-    uint256 public _id;
-
-    // Cada billetera puede tener un solo plan a la vez.
-    mapping(address => uint256) public investment_of; // Cantidad invertida por plan. begginers_plan_investment_of[begginer_plan_id]
-    mapping(address => uint256) public investment_ends_of; // Timestamp de finalizacion de inversion. Por plan begginers_plan_investment_ends_of[address][begginer_plan_id]
-    mapping(address => uint256) public investment_starts_of; // Timestamp de inicio de inversion.
-    mapping(address => bool) public is_active;
-    mapping(address => address) public erc20_of_plan;
-
-    constructor() {}
-
-    // Public Methods
-
-    // Begginers Plan
-    function invest_erc20_direct(uint256 amount, address erc20_address) public {
-        require(amount >= erc20_min_deposit, MSG_MIN_DEPOSIT);
-        require(amount <= erc20_max_deposit, MSG_MAX_DEPOSIT);
-        require(
-            erc20_address == address(BUSD) ||
-                erc20_address == address(USDT) ||
-                erc20_address == address(AMBAR),
-            ERC20_NOT_VALID
-        );
-        ERC20 erc20 = ERC20(erc20_address);
-        require(
-            erc20.transferFrom(msg.sender, ownerWallet, amount),
-            MSG_BUSD_FAIL
-        );
-
-        create_plan(msg.sender, amount, erc20_address);
-    }
-
-    function invest_bnb_direct() public payable {
-        require(msg.value >= bnb_min_deposit, MSG_MIN_DEPOSIT);
-        require(msg.value <= bnb_max_deposit, MSG_MAX_DEPOSIT);
-        payable(ownerWallet).transfer(msg.value);
-        create_plan(msg.sender, msg.value, address(0));
-    }
-
-    function withdraw() public {
-        require(is_active[msg.sender], MSG_PLAN_ACTIVE);
-        require(block.timestamp >= investment_ends_of[msg.sender], MSG_PLAN_ENDS);
-        
-        // Incrementamos la cantidad a reclamar en el contrato de Lure
-        increase_amount_on_lure(msg.sender);
-
-        // Marcamos el plan como NO activo
-        is_active[msg.sender] = false;
-    }
-
-    // Getters
-    function get_amount_to_claim(address wallet) public view returns (uint256) {
-        return investment_of[wallet] + ((investment_of[wallet] * total_interest) / 100);
-    }
-
-    function get_taxes(uint256 percent, uint256 amount)
-        public
-        pure
-        returns (uint256)
-    {
-        return (amount * percent) / 100;
-    }
-
-    function get_amount_to_claim_with_taxes(address wallet)
-        public
-        view
-        returns (uint256)
-    {
-        return get_amount_to_claim(wallet) - get_taxes(5, get_amount_to_claim(wallet));
-    }
-
-    function get_amount_of_our_busd() public view returns (uint256) {
-        return BUSD.balanceOf(address(this));
-    }
-
-    function get_amount_of_our_usdt() public view returns (uint256) {
-        return USDT.balanceOf(address(this));
-    }
-
-    function get_amount_of_our_ambar() public view returns (uint256) {
-        return AMBAR.balanceOf(address(this));
-    }
-
-    // Communication Methods
-    function invest_erc20(
-        uint256 amount,
-        address wallet,
-        address erc20_address
-    ) public {
-        require(msg.sender == address(lure), MSG_LURE);
-        require(
-            erc20_address == address(BUSD) ||
-                erc20_address == address(USDT) ||
-                erc20_address == address(AMBAR),
-            ERC20_NOT_VALID
-        );
-        create_plan(wallet, amount, erc20_address);
-    }
-
-    function invest_bnb(uint256 amount, address wallet) public {
-        require(msg.sender == address(lure), MSG_LURE);
-        require(amount >= bnb_min_deposit, MSG_MIN_DEPOSIT);
-        require(amount <= bnb_max_deposit, MSG_MAX_DEPOSIT);
-        create_plan(wallet, amount, address(0));
-    }
-
-    function setLure(address lure_address) public {
-        require(msg.sender == developmentWallet, MSG_DEV_WALLET);
-        lure = Lure(lure_address);
-    }
-
-    // Private Methods
-    function create_plan(
-        address wallet,
-        uint256 amount,
-        address erc20_address
-    ) private {
-        // Seteamos el ERC20 correspondiente
-        erc20_of_plan[wallet] = erc20_address;
-
-        // Seteamos la cantidad invertida
-        investment_of[wallet] = amount;
-
-        // Seteamos el timestamp de creacion de la inversion
-        investment_starts_of[wallet] = block.timestamp;
-
-        // Seteamos el tiempo de caducidad de la inversion
-        investment_ends_of[wallet] = block.timestamp + term_days;
-
-        // Marcamos el plan como activo
-        is_active[wallet] = true;
-    }
-
-    function increase_amount_on_lure(address wallet) private {
-        uint256 amount = get_amount_to_claim_with_taxes(wallet);
-
-        if (erc20_of_plan[wallet] == address(BUSD)) {
-            lure.increase_busd_of(wallet, amount);
-            return;
-        }
-
-        if (erc20_of_plan[wallet] == address(USDT)) {
-            lure.increase_usdt_of(wallet, amount);
-            return;
-        }
-
-        if (erc20_of_plan[wallet] == address(AMBAR)) {
-            lure.increase_ambar_of(wallet, amount);
-        }
-
-        if (erc20_of_plan[wallet] == address(0)) {
-            lure.increase_bnb_of(wallet, amount);
-        }
     }
 }

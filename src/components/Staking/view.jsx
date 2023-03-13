@@ -80,7 +80,7 @@ export const StakingView = () => {
             <div key={idx}>
               <Box w="2px" />
               {userHaveThisPlan(idx) ? (
-                <StakingSoldCard plan={getCorrectPlan(idx)} />
+                <StakingSoldCard plan={getCorrectPlan(idx)} idx={idx} />
               ) : (
                 <StakingSellCard info={getInfoPlan(idx)} idx={idx} />
               )}

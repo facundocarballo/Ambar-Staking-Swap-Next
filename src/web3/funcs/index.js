@@ -27,7 +27,7 @@ export const Owner_Address = "0x9060723c22dE586c2fA5eFa07A7743F6f4a935f5";
 
 // Contract Address
 export const Contract_Ambar_Address = "0x2a77B8097B7442CBe55dcEAF7Bb31c0D5eE8B9B0"; // Este contrato no es el mismo que el ERC20 Ambar
-export const Contract_Beginner_Plan_Address = "0xe6a7120ba2eB72C72C467051Dd4d1B310C787101"; //"0x7BEd86CF03F32200EAB466c47488955de3E0564c";
+export const Contract_Beginner_Plan_Address = "0xf98C14027bA102cb8044CE18A871A099E1e5cBAd"; //"0xe6a7120ba2eB72C72C467051Dd4d1B310C787101"; //"0x7BEd86CF03F32200EAB466c47488955de3E0564c";
 
 // ERC20's
 export const Contract_Busd_Address = "0x2E50a44F2C744E2BcDe025028622d6349115D7Bf";
