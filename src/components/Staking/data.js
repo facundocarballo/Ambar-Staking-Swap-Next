@@ -1,5 +1,5 @@
 export const Beginner = {
-    title: "Principiante",
+    title: "Staking AMBAR, BUSD, USDT y BNB",
     description: "Stake, Earn - And more!",
     interesRate: "0.5%",
     termDays: "40",
@@ -12,7 +12,7 @@ export const Beginner = {
 };
 
 export const Standar = {
-    title: "Standar",
+    title: "Staking AMBAR, BUSD, USDT y BNB",
     description: "El mejor plan para que el usuario invierta y gane dinero.",
     interesRate: "1%",
     termDays: "50",
@@ -25,7 +25,7 @@ export const Standar = {
 };
 
 export const Expert = {
-    title: "Experto",
+    title: "Staking AMBAR, BUSD, USDT y BNB",
     description: "Avance el nivel de inversion y gane rapidamente.",
     interesRate: "1,1%",
     termDays: "50",
@@ -38,7 +38,7 @@ export const Expert = {
 };
 
 export const Business = {
-    title: "Empresarial",
+    title: "Staking AMBAR, BUSD, USDT y BNB",
     description: "Disfruta del nivel de entrada de invertir y ganar dinero.",
     interesRate: "1.2%",
     termDays: "30",
@@ -51,7 +51,7 @@ export const Business = {
 };
 
 export const Premium = {
-    title: "Premium",
+    title: "Staking AMBAR, BUSD, USDT y BNB",
     description: "El mejor plan para que el usuario invierta y gane dinero.",
     interesRate: "1.3%",
     termDays: "30",
@@ -64,7 +64,7 @@ export const Premium = {
 };
 
 export const Executive = {
-    title: "Executive CS",
+    title: "Staking AMBAR, BUSD, USDT y BNB",
     description: "Avance el nivel de inversion y gane rapidamente.",
     interesRate: "1.5%",
     termDays: "90",

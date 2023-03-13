@@ -10,6 +10,7 @@ export const AmbarProvider = (props) => {
     // State Variables
     const [wallet, setWallet] = React.useState(null);
     const [chainID, setChainID] = React.useState(null);
+    const [bnbPrice, setBnbPrice] = React.useState(null);
     const [ERC20, setERC20] = React.useState(null);
     const [Ambar, setAmbar] = React.useState(null);
     const [PAIR, setPAIR] = React.useState(null);
@@ -38,6 +39,7 @@ export const AmbarProvider = (props) => {
         setPAIR(data.PAIR);
         setActualTimestamp(data.actual_timestamp);
         setContractRouter(data.ContractRouter);
+        setBnbPrice(data.bnbPrice);
     };
 
     const loadContractData = async () => {
@@ -115,6 +117,7 @@ export const AmbarProvider = (props) => {
         wallet,
         chainID,
         ERC20,
+        bnbPrice,
         Ambar,
         BeginnerPlan,
         StandarPlan,

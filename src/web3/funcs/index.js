@@ -5,6 +5,7 @@ import AmbarPlanJSON from '../ABI/AmbarPlan.json';
 import ERC20_JSON from '../ABI/ERC20.json';
 import PAIR_JSON from "../ABI/Pair.json";
 import ROUTER_JSON from '../ABI/Router.json';
+import { getBNBCurrentPrice } from "./coingecko";
 import { getPairInfo } from "./pair";
 import { getPlanData } from "./plans";
 import { getAllTokensInfo } from "./tokens";
@@ -60,6 +61,8 @@ export const loadBasicData = async () => {
     // PancakeSwap Contract
     const ContractPair_AMBAR_BNB = new Contract(PAIR_JSON.output.abi, Contract_Pair_AMBAR_BNB_Address);
     const ContractRouter = new Contract(ROUTER_JSON.output.abi, Contract_Router_Address);
+
+    const bnbPrice = await getBNBCurrentPrice();
     
     const PAIR = await getPairInfo(ContractPair_AMBAR_BNB);
 
@@ -166,7 +169,8 @@ export const loadBasicData = async () => {
         ERC20,
         PAIR,
         ContractRouter,
-        actual_timestamp
+        actual_timestamp,
+        bnbPrice
     }
 };
 

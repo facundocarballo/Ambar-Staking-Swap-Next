@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, Box, Text } from "@chakra-ui/react";
+import { HStack, Box, Text, Grid, GridItem } from "@chakra-ui/react";
 import { Plans } from "./data";
 import { StakingSellCard } from "./sellCard";
 import { StakingSoldCard } from "./soldCard";
@@ -74,7 +74,24 @@ export const StakingView = () => {
       {wallet == null ? (
         <Text color="white">Por favor, conecte su billetera.</Text>
       ) : (
-        <HStack w="100%" overflowX="scroll">
+        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+          {Plans.map((_, idx) => (
+            <GridItem key={idx}>
+              {userHaveThisPlan(idx) ? (
+                <StakingSoldCard plan={getCorrectPlan(idx)} idx={idx} />
+              ) : (
+                <StakingSellCard info={getInfoPlan(idx)} idx={idx} />
+              )}
+            </GridItem>
+          ))}
+        </Grid>
+      )}
+    </>
+  );
+};
+
+/*
+<HStack w="100%" overflowX="scroll">
           <Box w="2px" />
           {Plans.map((_, idx) => (
             <div key={idx}>
@@ -88,7 +105,4 @@ export const StakingView = () => {
             </div>
           ))}
         </HStack>
-      )}
-    </>
-  );
-};
+*/

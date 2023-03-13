@@ -10,6 +10,9 @@ import {
   BrowserRouter as Router
 } from "react-router-dom";
 import { useProvider } from '../context';
+import { getBNBCurrentPrice } from '../web3/funcs/coingecko';
+import { Image, Text } from '@chakra-ui/react';
+import { AMBAR_IMAGE } from '../web3/funcs';
 
 export const NavBar = () => {
 
@@ -17,7 +20,7 @@ export const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { loadContractData, wallet } = useProvider();
+  const { loadContractData, wallet, bnbPrice, PAIR } = useProvider();
 
   useEffect(() => {
     const onScroll = () => {
@@ -68,6 +71,16 @@ export const NavBar = () => {
               <Nav.Link href="Market " className={activeLink === 'market' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('projects')}>Market</Nav.Link>
               <Nav.Link href="https://ambarcoin.gitbook.io/ambar" className={activeLink === 'whitepaper' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('whitepaper')}>Whitepaper</Nav.Link>
             </Nav>
+            {
+              bnbPrice == null ? null : <>
+                <Image 
+                src={AMBAR_IMAGE}
+                alt='ambar-img'
+                boxSize='50px'
+                />
+                <Text>{(Number(bnbPrice) * PAIR.price).toFixed(6)} USD</Text>
+              </>
+            }
             <span className="navbar-text">
               {
                 wallet == null ?

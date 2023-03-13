@@ -198,6 +198,7 @@ export const SwapCard = () => {
         value={amountToSend}
         disabled={PAIR == null}
         onChange={(e) => handleSetAmount(e.currentTarget.value, 0)}
+        borderRadius={15}
         w="80%"
         h="100px"
         bg="gray.600"
@@ -215,6 +216,7 @@ export const SwapCard = () => {
         value={amountToReceive}
         disabled={PAIR == null}
         onChange={(e) => handleSetAmount(e.currentTarget.value, 1)}
+        borderRadius={15}
         w="80%"
         h="100px"
         bg="gray.600"
