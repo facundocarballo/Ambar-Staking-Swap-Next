@@ -222,8 +222,8 @@ export const StakingSellCard = ({ info, idx }) => {
   const getImage = () => {
     if (busdSelected) return BUSD_IMAGE;
     if (usdtSelected) return USDT_IMAGE;
-    if (ambarSelected) return AMBAR_IMAGE;
-    return BNB_IMAGE; 
+    if (bnbSelected) return BNB_IMAGE;
+    return AMBAR_IMAGE; 
   };
 
   // Component
@@ -294,6 +294,12 @@ export const StakingSellCard = ({ info, idx }) => {
         <HStack w="full">
           <Spacer />
           <Button
+            onClick={handleSelectAmbar}
+            variant={ambarSelected ? "selected" : "outline"}
+          >
+            AMBAR
+          </Button>
+          <Button
             onClick={handleSelectBusd}
             variant={busdSelected ? "selected" : "outline"}
           >
@@ -310,12 +316,6 @@ export const StakingSellCard = ({ info, idx }) => {
             variant={bnbSelected ? "selected" : "outline"}
           >
             BNB
-          </Button>
-          <Button
-            onClick={handleSelectAmbar}
-            variant={ambarSelected ? "selected" : "outline"}
-          >
-            AMBAR
           </Button>
           <Spacer />
         </HStack>
